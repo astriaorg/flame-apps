@@ -181,7 +181,7 @@ export const EvmWalletProvider: React.FC<EvmWalletProviderProps> = ({
       ([chainLabel, chain]): DropdownOption<EvmChainInfo> => ({
         label: chainLabel,
         value: chain,
-        leftIconClass: chain.iconClass,
+        LeftIcon: chain.IconComponent,
       }),
     );
   }, [evmChains]);
@@ -200,7 +200,7 @@ export const EvmWalletProvider: React.FC<EvmWalletProviderProps> = ({
     return {
       label: selectedEvmChain?.chainName || "",
       value: selectedEvmChain,
-      leftIconClass: selectedEvmChain?.iconClass || "",
+      LeftIcon: selectedEvmChain?.IconComponent,
     } as DropdownOption<EvmChainInfo>;
   }, [selectedEvmChain]);
 
@@ -223,7 +223,7 @@ export const EvmWalletProvider: React.FC<EvmWalletProviderProps> = ({
       (currency): DropdownOption<EvmCurrency> => ({
         label: currency.coinDenom,
         value: currency,
-        leftIconClass: currency.iconClass,
+        LeftIcon: currency.IconComponent,
       }),
     );
   }, [selectedEvmChain]);

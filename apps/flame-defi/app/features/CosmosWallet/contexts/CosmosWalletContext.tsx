@@ -117,7 +117,7 @@ export const CosmosWalletProvider: React.FC<CosmosWalletProviderProps> = ({
       ([chainLabel, chain]): DropdownOption<CosmosChainInfo> => ({
         label: chainLabel,
         value: chain,
-        leftIconClass: chain.iconClass,
+        LeftIcon: chain.IconComponent,
       }),
     );
   }, [cosmosChains]);
@@ -141,7 +141,7 @@ export const CosmosWalletProvider: React.FC<CosmosWalletProviderProps> = ({
       (currency): DropdownOption<IbcCurrency> => ({
         label: currency.coinDenom,
         value: currency,
-        leftIconClass: currency.iconClass,
+        LeftIcon: currency.IconComponent,
       }),
     );
   }, [selectedCosmosChain]);
@@ -160,7 +160,7 @@ export const CosmosWalletProvider: React.FC<CosmosWalletProviderProps> = ({
     return {
       label: selectedCosmosChain?.chainName || "",
       value: selectedCosmosChain,
-      leftIconClass: selectedCosmosChain?.iconClass || "",
+      LeftIcon: selectedCosmosChain?.IconComponent,
     } as DropdownOption<CosmosChainInfo>;
   }, [selectedCosmosChain]);
 

@@ -9,6 +9,13 @@ import Dropdown from "components/Dropdown/Dropdown";
 import { sendIbcTransfer, useCosmosWallet } from "features/CosmosWallet";
 import { AddErc20ToWalletButton, useEvmWallet } from "features/EvmWallet";
 import { NotificationType, useNotifications } from "features/Notifications";
+import { ActionButton } from "@repo/ui/components";
+import {
+  ArrowUpDownIcon,
+  EditIcon,
+  PlusIcon,
+  WalletIcon,
+} from "@repo/ui/icons";
 
 export default function DepositCard(): React.ReactElement {
   const { addNotification } = useNotifications();
@@ -67,7 +74,7 @@ export default function DepositCard(): React.ReactElement {
     return {
       label: matchingEvmCurrency.coinDenom,
       value: matchingEvmCurrency,
-      leftIconClass: matchingEvmCurrency.iconClass,
+      LeftIcon: matchingEvmCurrency.IconComponent,
     };
   }, [selectedIbcCurrency, selectedEvmChain, defaultEvmCurrencyOption]);
 
@@ -272,7 +279,7 @@ export default function DepositCard(): React.ReactElement {
         action: connectCosmosWallet,
         className: "has-text-primary",
         leftIconClass: "i-cosmos",
-        rightIconClass: "fas fa-plus",
+        RightIcon: PlusIcon,
       },
     ],
     [connectCosmosWallet],
@@ -284,13 +291,13 @@ export default function DepositCard(): React.ReactElement {
         label: "Connect EVM Wallet",
         action: handleConnectEvmWallet,
         className: "has-text-primary",
-        rightIconClass: "fas fa-plus",
+        RightIcon: PlusIcon,
       },
       {
         label: "Enter address manually",
         action: handleEditRecipientClick,
         className: "has-text-primary",
-        rightIconClass: "fas fa-pen-to-square",
+        RightIcon: EditIcon,
       },
     ];
   }, [handleConnectEvmWallet, handleEditRecipientClick]);
@@ -306,9 +313,9 @@ export default function DepositCard(): React.ReactElement {
                 placeholder="Select..."
                 options={cosmosChainsOptions}
                 onSelect={selectCosmosChain}
-                leftIconClass={"i-wallet"}
                 additionalOptions={additionalIbcChainOptions}
                 valueOverride={selectedCosmosChainOption}
+                LeftIcon={WalletIcon}
               />
             </div>
             {selectedCosmosChain && ibcCurrencyOptions && (
@@ -318,26 +325,27 @@ export default function DepositCard(): React.ReactElement {
                   options={ibcCurrencyOptions}
                   defaultOption={defaultIbcCurrencyOption}
                   onSelect={selectIbcCurrency}
+                  LeftIcon={WalletIcon}
                 />
               </div>
             )}
           </div>
           {fromAddress && (
-            <div className="field-info-box py-2 px-3">
+            <div className="bg-grey-dark rounded-xl py-2 px-3">
               {fromAddress && (
-                <p className="has-text-grey-light has-text-weight-semibold">
+                <p className="text-grey-light font-semibold">
                   Address: {fromAddress}
                 </p>
               )}
               {fromAddress &&
                 selectedIbcCurrency &&
                 !isLoadingCosmosBalance && (
-                  <p className="mt-2 has-text-grey-lighter has-text-weight-semibold">
+                  <p className="mt-2 text-grey-lighter font-semibold">
                     Balance: {cosmosBalance}
                   </p>
                 )}
               {fromAddress && isLoadingCosmosBalance && (
-                <p className="mt-2 has-text-grey-lighter has-text-weight-semibold">
+                <p className="mt-2 text-grey-lighter font-semibold">
                   Balance: <i className="fas fa-spinner fa-pulse" />
                 </p>
               )}
@@ -349,33 +357,29 @@ export default function DepositCard(): React.ReactElement {
       {isAnimating ? (
         <AnimatedArrowSpacer isAnimating={isAnimating} />
       ) : (
-        <div className="is-flex is-flex-direction-row">
+        <div className="flex flex-row">
           <div>
-            <span className="icon is-medium">
-              <i className="i-arrow-up-arrow-down" />
-            </span>
+            <ArrowUpDownIcon size={32} />
           </div>
-          <div className="ml-4 card-spacer" />
+          <div className="ml-4 border-t border-grey-dark my-4 w-full" />
         </div>
       )}
 
-      <div className="field">
-        <div className="is-flex is-flex-direction-row is-align-items-center">
-          <div className="label-left">To</div>
-          <div className="is-flex-grow-1">
+      <div className="mb-4">
+        <div className="flex flex-row items-center">
+          <div className="mr-4 min-w-[70px] md:min-w-[60px]">To</div>
+          <div className="flex-grow">
             <Dropdown
               placeholder="Connect EVM Wallet or enter address"
               options={evmChainsOptions}
               onSelect={selectEvmChain}
-              leftIconClass={"i-wallet"}
               additionalOptions={additionalEvmChainOptions}
               valueOverride={selectedEvmChainOption}
+              LeftIcon={WalletIcon}
             />
           </div>
           {selectedEvmChain && evmCurrencyOptions && (
             <div className="ml-3">
-              {/* NOTE - the placeholder happens to only be shown when there isn't a matching */}
-              {/* evm currency. It's also always disabled because it's controlled by sender currency selection. */}
               <Dropdown
                 placeholder="No matching token"
                 options={evmCurrencyOptions}
@@ -390,10 +394,10 @@ export default function DepositCard(): React.ReactElement {
         {evmAccountAddress &&
           !isRecipientAddressEditable &&
           !recipientAddressOverride && (
-            <div className="field-info-box mt-3 py-2 px-3">
+            <div className="mt-3 bg-grey-dark rounded-xl py-2 px-3">
               {evmAccountAddress && (
                 <p
-                  className="has-text-grey-light has-text-weight-semibold is-clickable"
+                  className="text-grey-light font-semibold cursor-pointer"
                   onKeyDown={handleEditRecipientClick}
                   onClick={handleEditRecipientClick}
                 >
@@ -404,12 +408,12 @@ export default function DepositCard(): React.ReactElement {
               {evmAccountAddress &&
                 selectedEvmChain &&
                 !isLoadingSelectedEvmCurrencyBalance && (
-                  <p className="mt-2 has-text-grey-lighter has-text-weight-semibold">
+                  <p className="mt-2 text-grey-lighter font-semibold">
                     Balance: {selectedEvmCurrencyBalance}
                   </p>
                 )}
               {evmAccountAddress && isLoadingSelectedEvmCurrencyBalance && (
-                <p className="mt-2 has-text-grey-lighter has-text-weight-semibold">
+                <p className="mt-2 text-grey-lighter font-semibold">
                   Balance: <i className="fas fa-spinner fa-pulse" />
                 </p>
               )}
@@ -469,16 +473,16 @@ export default function DepositCard(): React.ReactElement {
         )}
       </div>
 
-      <div className="is-flex is-flex-direction-row is-align-items-center">
-        <div className="card-spacer" />
+      <div className="flex flex-row items-center">
+        <div className="border-t border-grey-dark my-4 w-full" />
       </div>
 
-      <div className="field">
-        <div className="is-flex is-flex-direction-row is-align-items-center">
-          <div className="label-left">Amount</div>
-          <div className="control mt-1 is-flex-grow-1">
+      <div className="mb-4">
+        <div className="flex flex-row items-center">
+          <div className="mr-4 min-w-[70px] md:min-w-[60px]">Amount</div>
+          <div className="mt-1 flex-grow">
             <input
-              className="input is-medium"
+              className="w-full p-3 bg-transparent border border-grey-dark focus:border-white focus:outline-none rounded-xl text-white text-[20px]"
               type="text"
               placeholder="0.00"
               onChange={updateAmount}
@@ -487,21 +491,19 @@ export default function DepositCard(): React.ReactElement {
           </div>
         </div>
         {!isAmountValid && hasTouchedForm && (
-          <div className="help is-danger mt-2">
+          <div className="text-status-danger mt-2">
             Amount must be a number greater than 0
           </div>
         )}
       </div>
 
-      <div className="card-footer mt-4">
-        <button
-          type="button"
-          className="button is-tall is-wide has-gradient-to-right-orange has-text-weight-bold has-text-white"
-          onClick={() => handleDeposit()}
+      <div className="mt-4">
+        <ActionButton
+          onClick={handleDeposit}
           disabled={isDepositDisabled}
-        >
-          {isLoading ? "Processing..." : "Deposit"}
-        </button>
+          isLoading={isLoading}
+          buttonText={"Deposit"}
+        />
       </div>
     </div>
   );
