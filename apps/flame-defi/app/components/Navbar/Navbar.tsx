@@ -92,7 +92,7 @@ function Navbar() {
           </Link>
         </div>
       </div>
-      <div className="navbar-end flex gap-6 items-center ">
+      <div className="hidden md:flex gap-6 items-center">
         <NetworkSelector />
         <ConnectWalletsButton />
       </div>

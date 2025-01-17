@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React from "react";
 import { useAccount } from "wagmi";
 
 import { CopyToClipboardButton } from "@repo/ui/components";
@@ -25,10 +25,6 @@ export default function SingleWalletButton() {
   } = useEvmWallet();
   const userAccount = useAccount();
   //   const [showTransactions, setShowTransactions] = useState(false);
-
-  const handleConnectWallet = useCallback(() => {
-    connectEvmWallet();
-  }, [connectEvmWallet]);
 
   return userAccount.address ? (
     <Popover>
@@ -102,7 +98,7 @@ export default function SingleWalletButton() {
   ) : (
     <Button
       variant="default"
-      onClick={handleConnectWallet}
+      onClick={() => connectEvmWallet()}
       className="rounded-md bg-button-gradient text-white transition border border-button-gradient hover:border-white text-base w-[156px]"
     >
       <span>Connect</span>
